@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 3010;
 connectDB();
 
 const userRoutes = require("./routes/user.routes");
+const courseRoutes = require("./routes/course.routes");
 
 const username = "kevin";
 const password = "123";
@@ -31,7 +32,8 @@ app.use("/", express.static(path.join(__dirname, "public")));
 
 app.use("/", require("./routes/root"));
 
-app.use("/user", userRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/course", courseRoutes);
 
 app.post("/login", (request, response, next) => {
   try {
@@ -64,5 +66,5 @@ app.all("*", (req, res) => {
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`.black.bgCyan);
+  console.log(`Server is running on `.bgCyan + ` port >>> ${PORT}`.cyan);
 });

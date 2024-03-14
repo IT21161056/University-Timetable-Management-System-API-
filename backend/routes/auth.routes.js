@@ -8,14 +8,14 @@ const {
   getAllProfiles,
   updateUserProfile,
   deleteUserProfile,
-} = require("../controller/user.controller");
-const { protect, checkRole } = require("../middleware/authMiddleware");
+} = require("../controller/authController");
+const { protect, checkAdminRole } = require("../middleware/authMiddleware");
 
 router.post("/auth", authUser);
 router.post("/register", registerUser);
 router.post("/logout", logoutUser);
 router.get("/profile", protect, getUserProfile);
-router.get("/allProfiles", protect, checkRole("admin"), getAllProfiles);
+router.get("/allProfiles", protect, getAllProfiles);
 router.put("/profile", protect, updateUserProfile);
 router.delete("/profile", protect, deleteUserProfile);
 
