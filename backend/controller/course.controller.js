@@ -17,6 +17,15 @@ const createCourse = tryCatch(async (req, res) => {
   res.status(200).json(course);
 });
 
+const getAllCourses = tryCatch(async (req, res) => {});
+const updateCourse = tryCatch(async (req, res) => {});
+const getCourseById = tryCatch(async (req, res) => {});
+const deleteCourse = tryCatch(async (req, res) => {});
+
 module.exports = {
   createCourse,
+  getAllCourses,
+  updateCourse,
+  getCourseById,
+  deleteCourse,
 };

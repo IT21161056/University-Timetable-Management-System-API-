@@ -1,6 +1,6 @@
 const Room = require("../models/room.model");
 const Notification = require("../models/notification.model");
-const User = require("../models/userModel");
+const User = require("../models/user.model");
 
 // Controller for creating a room
 async function createRoom(req, res) {

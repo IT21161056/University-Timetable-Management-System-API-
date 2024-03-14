@@ -1,5 +1,5 @@
 const RoomBooking = require("../models/roomBooking.model");
-const Timetable = require("../models/timeTable.modal");
+const Timetable = require("../models/timetable.model");
 
 async function createBooking(req, res) {}
 

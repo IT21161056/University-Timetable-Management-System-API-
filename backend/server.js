@@ -9,16 +9,16 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 const { UnauthorizedError } = require("./exceptions/baseException");
-const connectDB = require("./config/db");
 const PORT = process.env.PORT || 3010;
+
+const connectDB = require("./config/db");
 
 connectDB();
 
-const userRoutes = require("./routes/user.routes");
-const courseRoutes = require("./routes/course.routes");
-
 const username = "kevin";
 const password = "123";
+
+const facultyRoutes = require("./routes/faculty.routes");
 
 app.use(logger);
 
@@ -32,22 +32,11 @@ app.use("/", express.static(path.join(__dirname, "public")));
 
 app.use("/", require("./routes/root"));
 
-app.use("/api/user", userRoutes);
-app.use("/api/course", courseRoutes);
-
-app.post("/login", (request, response, next) => {
-  try {
-    if (
-      request.body.username != username ||
-      request.body.password != password
-    ) {
-      throw new UnauthorizedError();
-    }
-    response.json("Good Job Mofo");
-  } catch (error) {
-    next(error);
-  }
-});
+app.use("/api/faculty", require("./routes/faculty.routes"));
+app.use("/api/session", require("./routes/session.routes"));
+app.use("/api/room", require("./routes/room.routes"));
+app.use("/api/room-booking", require("./routes/roomBooking.routes"));
+app.use("/api/course", require("./routes/course.routes"));
 
 app.all("*", (req, res) => {
   res.status(404);
@@ -66,5 +55,5 @@ app.all("*", (req, res) => {
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on `.bgCyan + ` port >>> ${PORT}`.cyan);
+  console.log(`Server is running on port ${PORT}`.black.bgCyan);
 });

@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const {
-  createNewCourse,
+  createCourse,
   getAllCourses,
   updateCourse,
   getCourseById,
   deleteCourse,
 } = require("../controller/course.controller");
 
-router.route("/").post(createNewCourse);
+router.route("/").post(createCourse);
 router.route("/").get(getAllCourses);
 router.route("/").patch(updateCourse);
 router.route("/:id").get(getCourseById);

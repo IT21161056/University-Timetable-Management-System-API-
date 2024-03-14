@@ -1,6 +1,6 @@
 const Faculty = require("../models/faculty.model");
 const Session = require("../models/session.model");
-const Timetable = require("../models/timeTable.modal");
+const Timetable = require("../models/timetable.model");
 const { NotFound } = require("../exceptions/baseException");
 const { tryCatch } = require("../utils/tryCatchWrapper");
 
