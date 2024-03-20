@@ -1,5 +1,5 @@
-const { AppBaseError } = require("../exceptions/baseException");
-const { logEvents } = require("./logger");
+import { AppBaseError } from "../exceptions/baseException.js";
+import { logEvents } from "./logger.js";
 
 const errorHandler = (err, req, res, next) => {
   logEvents(
@@ -7,27 +7,22 @@ const errorHandler = (err, req, res, next) => {
     "errLog.log"
   );
 
-  // console.log(err.stack);
-
-  // const status = req.statusCode ?? 500; // server error
-
-  // res.status(status);
+  console.log("error >>", err.message);
 
   if (err instanceof AppBaseError) {
+    console.log(err.message);
     res.json({
       message: err.message,
       status: err.status,
       type: err.type,
     });
-    // Handle errors of type AppBaseError or its subclasses
   } else {
     res.json({
-      message: "Soething went wrong",
+      message: err.message,
       status: 500,
       type: "Internal Server Error",
     });
-    // Handle other types of errors
   }
 };
 
-module.exports = errorHandler;
+export default errorHandler;

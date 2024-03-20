@@ -1,20 +1,12 @@
-const RoomBooking = require("../models/roomBooking.model");
-const Timetable = require("../models/timetable.model");
+import RoomBooking from "../models/roomBooking.model.js";
+import Timetable from "../models/timeTable.modal.js";
 
-async function createBooking(req, res) {}
+export async function createBooking(req, res) {}
 
-async function updateBooking(req, res) {}
+export async function updateBooking(req, res) {}
 
-async function deleteBooking(req, res) {}
+export async function deleteBooking(req, res) {}
 
-async function getAllBookings(req, res) {}
+export async function getAllBookings(req, res) {}
 
-async function getBookingById(req, res) {}
-
-module.exports = {
-  createBooking,
-  updateBooking,
-  deleteBooking,
-  getAllBookings,
-  getBookingById,
-};
+export async function getBookingById(req, res) {}

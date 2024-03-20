@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const timetableSchema = new mongoose.Schema({
   faculty: {
@@ -14,4 +14,4 @@ const timetableSchema = new mongoose.Schema({
   sunday: [{ type: mongoose.Schema.Types.ObjectId, ref: "Session" }],
 });
 
-module.exports = mongoose.model("Timetable", timetableSchema);
+export default mongoose.model("Timetable", timetableSchema);

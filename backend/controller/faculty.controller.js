@@ -1,9 +1,8 @@
-const { NotFound } = require("../exceptions/baseException");
-const Faculty = require("../models/faculty.model");
+import { CustomError } from "../exceptions/baseException.js";
+import Faculty from "../models/faculty.model.js";
+import { tryCatch } from "../utils/tryCatchWrapper.js";
 
-const { tryCatch } = require("../utils/tryCatchWrapper");
-
-const addFaculty = async (req, res) => {
+export const addFaculty = async (req, res) => {
   try {
     const { facultyName } = req.body;
 
@@ -17,11 +16,11 @@ const addFaculty = async (req, res) => {
 
     res.status(200).json(faculty);
   } catch (error) {
-    req.status(500).json(error.message);
+    res.status(500).json(error.message);
   }
 };
 
-const getAllFaculties = async (_, res) => {
+export const getAllFaculties = async (_, res) => {
   try {
     const faculties = await Faculty.find();
 
@@ -34,27 +33,20 @@ const getAllFaculties = async (_, res) => {
   }
 };
 
-const getFacultyById = tryCatch(async (req, res) => {
+export const getFacultyById = tryCatch(async (req, res) => {
   const facultyId = req.params.id;
 
   const faculty = await Faculty.findById(facultyId);
 
-  if (!faculty) throw new NotFound();
+  if (!faculty) throw new CustomError();
 
   res.status(200).json(faculty);
 });
 
-const removeFaculty = tryCatch(async (req, res) => {
+export const removeFaculty = tryCatch(async (req, res) => {
   const result = await Faculty.findByIdAndDelete(req.params.id);
 
-  if (!result) new NotFound();
+  if (!result) throw new CustomError();
 
   res.status(200).json({ message: "Faculty removed!" });
 });
-
-module.exports = {
-  addFaculty,
-  getAllFaculties,
-  getFacultyById,
-  removeFaculty,
-};

@@ -3,4 +3,5 @@ const allowedOrigins = [
   "https://www.dandrepairshop.com",
   "https://dandrepairshop.com",
 ];
-module.exports = allowedOrigins;
+
+export { allowedOrigins };

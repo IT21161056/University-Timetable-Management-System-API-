@@ -1,24 +1,38 @@
-const express = require("express");
-var colors = require("colors");
+import dotenv from "dotenv";
+dotenv.config();
+import colors from "colors";
+import cors from "cors";
+import * as http from "http";
+import express from "express";
+import { Server } from "socket.io";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+import connectDB from "./config/db.js";
+import cookieParser from "cookie-parser";
+import { logger } from "./middleware/logger.js";
+import corsOptions from "./config/corsOptions.js";
+import errorHandler from "./middleware/errorHandler.js";
+
+//routes
+import rootRoute from "./routes/root.js";
+import authRoutes from "./routes/auth.routes.js";
+import roomRoutes from "./routes/room.routes.js";
+import courseRoute from "./routes/course.route.js";
+import facultyRoutes from "./routes/faculty.routes.js";
+import sessionRoutes from "./routes/session.routes.js";
+import timetableRoutes from "./routes/timetable.routes.js";
+import enrollmentRoutes from "./routes/enrollment.routes.js";
+import roomBookingRoutes from "./routes/roomBooking.routes.js";
+import notificationRoutes from "./routes/notification.routes.js";
+
 const app = express();
-require("dotenv").config();
-const path = require("path");
-const { logger } = require("./middleware/logger");
-const errorHandler = require("./middleware/errorHandler");
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
-const corsOptions = require("./config/corsOptions");
-const { UnauthorizedError } = require("./exceptions/baseException");
 const PORT = process.env.PORT || 3010;
 
-const connectDB = require("./config/db");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
+//connect to the mongoDB
 connectDB();
-
-const username = "kevin";
-const password = "123";
-
-const facultyRoutes = require("./routes/faculty.routes");
 
 app.use(logger);
 
@@ -28,24 +42,27 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-app.use("/", express.static(path.join(__dirname, "public")));
+app.use("/", express.static(join(__dirname, "public")));
 
-app.use("/", require("./routes/root"));
+app.use("/", rootRoute);
 
-app.use("/api/faculty", require("./routes/faculty.routes"));
-app.use("/api/session", require("./routes/session.routes"));
-app.use("/api/room", require("./routes/room.routes"));
-app.use("/api/room-booking", require("./routes/roomBooking.routes"));
-app.use("/api/course", require("./routes/course.routes"));
+console.log(new Date());
+
+app.use("/api/user", authRoutes);
+app.use("/api/room", roomRoutes);
+app.use("/api/course", courseRoute);
+app.use("/api/faculty", facultyRoutes);
+app.use("/api/session", sessionRoutes);
+app.use("/api/room-booking", roomBookingRoutes);
+app.use("/api/timetable", timetableRoutes);
+app.use("/api/notification", notificationRoutes);
+app.use("/api/enroll", enrollmentRoutes);
 
 app.all("*", (req, res) => {
   res.status(404);
-
-  // if req has accepts header
   if (req.accepts("html")) {
     res.sendFile(path.join(__dirname, "views", "404.html"));
   } else if (req.accepts("json")) {
-    //if its json request
     res.json({ message: "404 Not Found" });
   } else {
     res.type("txt").send("404 Not Fund");
@@ -54,6 +71,15 @@ app.all("*", (req, res) => {
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+const server = http.createServer(app);
+
+export const io = new Server(server);
+
+io.on("connect", () => {
+  // io.emit("Hi I GOT YOUR DATA");
+  console.log("CONNECTED");
+});
+
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`.black.bgCyan);
 });

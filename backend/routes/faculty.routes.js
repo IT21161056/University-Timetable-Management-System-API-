@@ -1,13 +1,14 @@
-const express = require("express");
-const router = express.Router();
-const {
+import express from "express";
+import {
   addFaculty,
   getAllFaculties,
   getFacultyById,
-} = require("../controller/faculty.controller");
+} from "../controller/faculty.controller.js";
+
+const router = express.Router();
 
 router.route("/").post(addFaculty);
 router.route("/").get(getAllFaculties);
 router.route("/:id").get(getFacultyById);
 
-module.exports = router;
+export default router;
