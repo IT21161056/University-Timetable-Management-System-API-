@@ -1,8 +1,10 @@
-const Course = require("../models/course.model");
-const { tryCatch } = require("../utils/tryCatchWrapper");
+import Course from "../models/course.model.js";
+import { tryCatch } from "../utils/tryCatchWrapper.js";
+import { CustomError } from "../exceptions/baseException.js";
 
+//add new course to the system
 const createCourse = tryCatch(async (req, res) => {
-  console.log(req.body);
+  console.log("course");
   const { courseId, courseName, faculty, description } = req.body;
 
   const course = await Course.create({
@@ -12,20 +14,18 @@ const createCourse = tryCatch(async (req, res) => {
     description,
   });
 
-  //   if (!course) new Error("course create error");
+  console.log("course >>>", course);
+
+  if (!course) throw new CustomError("Course create fail.");
 
   res.status(200).json(course);
 });
 
-const getAllCourses = tryCatch(async (req, res) => {});
-const updateCourse = tryCatch(async (req, res) => {});
-const getCourseById = tryCatch(async (req, res) => {});
-const deleteCourse = tryCatch(async (req, res) => {});
+//get all the available course
+const getCourses = tryCatch(async (_, res) => {
+  const courses = await Course.find();
 
-module.exports = {
-  createCourse,
-  getAllCourses,
-  updateCourse,
-  getCourseById,
-  deleteCourse,
-};
+  res.status(200).json(courses);
+});
+
+export { createCourse, getCourses };

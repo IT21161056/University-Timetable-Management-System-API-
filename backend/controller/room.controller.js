@@ -1,132 +1,114 @@
-const Room = require("../models/room.model");
-const Notification = require("../models/notification.model");
-const User = require("../models/user.model");
+import Room from "../models/room.model.js";
+import Notification from "../models/notification.model.js";
+import User from "../models/userModel.js";
+import { tryCatch } from "../utils/tryCatchWrapper.js";
+import { CustomError } from "../exceptions/baseException.js";
+import { io } from "../server.js";
 
 // Controller for creating a room
-async function createRoom(req, res) {
-  try {
-    const { roomName, building, floor, capacity } = req.body;
-    const newRoom = new Room({
+const createRoom = tryCatch(async (req, res) => {
+  const { roomName, building, floor, capacity } = req.body;
+  const newRoom = new Room({
+    roomName,
+    building,
+    floor,
+    capacity,
+  });
+  const savedRoom = await newRoom.save();
+
+  const users = await User.find();
+
+  const notifications = users.map((user) => {
+    return new Notification({
+      userID: user._id,
+      message: `A new room "${roomName}" has been created in building ${building}`,
+    });
+  });
+
+  notifications = await Notification.insertMany(notifications);
+
+  if (notifications) {
+    io.emit("notification", { data: notifications });
+  }
+
+  res.status(201).json(savedRoom);
+});
+
+// Controller for updating a room
+const updateRoom = tryCatch(async (req, res) => {
+  const { id } = req.params;
+  const { roomName, building, floor, capacity } = req.body;
+  const updatedRoom = await Room.findByIdAndUpdate(
+    id,
+    {
       roomName,
       building,
       floor,
       capacity,
+    },
+    { new: true }
+  );
+
+  // Fetch all users
+  const users = await User.find();
+
+  // Create notifications for each user
+  const notifications = users.map((user) => {
+    return new Notification({
+      userID: user._id,
+      message: `Room "${roomName}" in building ${building} has been updated`,
     });
-    const savedRoom = await newRoom.save();
+  });
 
-    // Fetch all users
-    // const users = await User.find();
+  // Save notifications to database
+  await Notification.insertMany(notifications);
 
-    // Create notifications for each user
-    // const notifications = users.map((user) => {
-    //   return new Notification({
-    //     userID: user._id,
-    //     message: `A new room "${roomName}" has been created in building ${building}`,
-    //   });
-    // });
-
-    // Save notifications to database
-    // await Notification.insertMany(notifications);
-
-    res.status(201).json(savedRoom);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}
-
-// Controller for updating a room
-async function updateRoom(req, res) {
-  try {
-    const { id } = req.params;
-    const { roomName, building, floor, capacity } = req.body;
-    const updatedRoom = await Room.findByIdAndUpdate(
-      id,
-      {
-        roomName,
-        building,
-        floor,
-        capacity,
-      },
-      { new: true }
-    );
-
-    // Fetch all users
-    const users = await User.find();
-
-    // Create notifications for each user
-    const notifications = users.map((user) => {
-      return new Notification({
-        userID: user._id,
-        message: `Room "${roomName}" in building ${building} has been updated`,
-      });
-    });
-
-    // Save notifications to database
-    await Notification.insertMany(notifications);
-
-    res.json(updatedRoom);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}
+  res.json(updatedRoom);
+});
 
 // Controller for deleting a room
-async function deleteRoom(req, res) {
-  try {
-    const { id } = req.params;
-    const room = await Room.findByIdAndDelete(id);
-    if (!room) {
-      return res.status(404).json({ message: "Room not found" });
-    }
-
-    // Fetch all users
-    const users = await User.find();
-
-    // Create notifications for each user
-    const notifications = users.map((user) => {
-      return new Notification({
-        userID: user._id,
-        message: `Room "${room.roomName}" in building ${room.building} has been deleted`,
-      });
-    });
-
-    // Save notifications to database
-    await Notification.insertMany(notifications);
-
-    res.json({ message: "Room deleted" });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+const deleteRoom = tryCatch(async (req, res) => {
+  const { id } = req.params;
+  const room = await Room.findByIdAndDelete(id);
+  if (!room) {
+    throw new CustomError({ message: "Room not found" });
   }
-}
+
+  const users = await User.find();
+
+  const notifications = users.map((user) => {
+    return new Notification({
+      userID: user._id,
+      message: `Room "${room.roomName}" in building ${room.building} has been deleted`,
+    });
+  });
+
+  await Notification.insertMany(notifications);
+
+  res.json({ message: "Room deleted!" });
+});
 
 // Controller for getting all rooms
-async function getAllRooms(req, res) {
-  try {
-    const rooms = await Room.find();
-    res.json(rooms);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}
+const getAllRooms = tryCatch(async (req, res) => {
+  const rooms = await Room.find();
+
+  if (!rooms.length) throw new CustomError({ message: "No rooms!" });
+
+  res.json(rooms);
+});
 
 // Controller for getting a room by ID
-async function getRoomById(req, res) {
-  try {
-    const { id } = req.params;
-    const room = await Room.findById(id);
-    if (!room) {
-      return res.status(404).json({ message: "Room not found" });
-    }
-    res.json(room);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+const getRoomById = tryCatch(async (req, res) => {
+  const { id } = req.params;
+  const room = await Room.findById(id);
+  if (!room) {
+    throw new CustomError({
+      message: "Room not found",
+      status: 404,
+      type: "Error.NotFound",
+    });
   }
-}
+  res.json(room);
+});
 
-module.exports = {
-  createRoom,
-  updateRoom,
-  deleteRoom,
-  getAllRooms,
-  getRoomById,
-};
+export { createRoom, updateRoom, deleteRoom, getAllRooms, getRoomById };
