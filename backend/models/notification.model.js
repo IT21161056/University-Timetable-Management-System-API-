@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const notificationSchema = mongoose.Schema({
   userID: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // Assuming you have a User model
+    ref: "User",
     required: true,
   },
   message: {
@@ -18,4 +18,4 @@ const notificationSchema = mongoose.Schema({
 
 const Notification = mongoose.model("Notification", notificationSchema);
 
-module.exports = Notification;
+export default Notification;

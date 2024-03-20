@@ -1,7 +1,9 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
-const userSchema = mongoose.Schema(
+const { Schema, model } = mongoose;
+
+const userSchema = new Schema(
   {
     name: {
       type: String,
@@ -30,23 +32,23 @@ const userSchema = mongoose.Schema(
   }
 );
 
-//password hashing part
+// Password hashing part
 userSchema.pre("save", async function (next) {
-  //check if the password hashed
+  // Check if the password hashed
   if (!this.isModified("password")) {
     next();
   }
 
-  //hashing the password
+  // Hashing the password
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-//to cheack the password
+// To check the password
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const User = mongoose.model("User", userSchema);
+const User = model("User", userSchema);
 
-module.exports = User;
+export default User;
