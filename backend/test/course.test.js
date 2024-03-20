@@ -7,7 +7,6 @@ const server = use(chaiHttp);
 use(chaiHttp);
 
 describe("createCourse function", () => {
-  console.log("afaaw");
   it("should create a new course with valid data", async () => {
     const newCourseData = {
       courseId: "CSE102",
@@ -38,4 +37,19 @@ describe("createCourse function", () => {
   });
 
   // Add more test cases for error scenarios if needed
+});
+
+describe("Retrieve all the courses.", () => {
+  it("should return an array of courses", async () => {
+    // Make a GET request to the endpoint
+    const response = await server.request(BASE_URL).get("/course");
+
+    // Check status code
+    expect(response.status).to.equal(200);
+
+    // Check response body
+    expect(response.body).to.be.an("array");
+    expect(response.body).to.have.lengthOf.at.least(1); // Assuming courses exist in the database
+    // You might want to add more detailed checks based on your specific application logic
+  });
 });

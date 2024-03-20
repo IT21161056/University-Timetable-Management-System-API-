@@ -14,8 +14,6 @@ const createCourse = tryCatch(async (req, res) => {
     description,
   });
 
-  console.log("course >>>", course);
-
   if (!course) throw new CustomError("Course create fail.");
 
   res.status(200).json(course);

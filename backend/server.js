@@ -24,6 +24,7 @@ import timetableRoutes from "./routes/timetable.routes.js";
 import enrollmentRoutes from "./routes/enrollment.routes.js";
 import roomBookingRoutes from "./routes/roomBooking.routes.js";
 import notificationRoutes from "./routes/notification.routes.js";
+import newTimetableRoutes from "./routes/newTimetable.routes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3010;
@@ -57,6 +58,7 @@ app.use("/api/room-booking", roomBookingRoutes);
 app.use("/api/timetable", timetableRoutes);
 app.use("/api/notification", notificationRoutes);
 app.use("/api/enroll", enrollmentRoutes);
+app.use("/api/newTimetable", newTimetableRoutes);
 
 app.all("*", (req, res) => {
   res.status(404);
