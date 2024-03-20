@@ -1,7 +1,7 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/user.model");
+import jwt from "jsonwebtoken";
+import User from "../models/userModel.js";
 
-const protect = async (req, res, next) => {
+export const protect = async (req, res, next) => {
   let token;
 
   try {
@@ -27,7 +27,7 @@ const protect = async (req, res, next) => {
   }
 };
 
-const checkRole = (role) => {
+export const checkRole = (role) => {
   return (req, res, next) => {
     try {
       if (!req.user || req.user.role !== role) {
@@ -39,9 +39,4 @@ const checkRole = (role) => {
       next(error);
     }
   };
-};
-
-module.exports = {
-  protect,
-  checkRole,
 };
