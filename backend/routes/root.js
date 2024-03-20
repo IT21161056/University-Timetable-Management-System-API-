@@ -1,10 +1,13 @@
-const express = require("express");
+import express from "express";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+
 const router = express.Router();
-const path = require("path");
+
+const __filename = fileURLToPath(import.meta.url);
 
 router.get("^/$|index(.html)?", (req, res) => {
-  res.re;
-  res.sendFile(path.join(__dirname, "..", "views", "index.html"));
+  res.sendFile(join(dirname(__filename), "..", "views", "index.html"));
 });
 
-module.exports = router;
+export default router;

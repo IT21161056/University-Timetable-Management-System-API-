@@ -1,26 +1,18 @@
-const express = require("express");
-const router = express.Router();
-const {
+import express from "express";
+import {
   createRoom,
   deleteRoom,
   getAllRooms,
   getRoomById,
   updateRoom,
-} = require("../controller/room.controller");
+} from "../controller/room.controller.js";
 
-// Route for creating a room
+const router = express.Router();
+
 router.post("/", createRoom);
-
-// Route for updating a room
 router.put("/:id", updateRoom);
-
-// Route for deleting a room
 router.delete("/:id", deleteRoom);
-
-// Route for getting all rooms
 router.get("/", getAllRooms);
-
-// Route for getting a room by ID
 router.get("/:id", getRoomById);
 
-module.exports = router;
+export default router;
