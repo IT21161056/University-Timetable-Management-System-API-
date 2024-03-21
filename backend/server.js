@@ -83,5 +83,5 @@ io.on("connect", () => {
 });
 
 server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`.black.bgCyan);
+  console.log(`Server is running on port ${PORT}`.cyan);
 });

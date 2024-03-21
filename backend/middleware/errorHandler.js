@@ -11,7 +11,7 @@ const errorHandler = (err, req, res, next) => {
 
   if (err instanceof AppBaseError) {
     console.log(err.message);
-    res.json({
+    res.status(err.status).json({
       message: err.message,
       status: err.status,
       type: err.type,

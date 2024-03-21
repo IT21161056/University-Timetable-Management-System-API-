@@ -2,6 +2,7 @@ import { DAYS } from "../constants/constants.js";
 import { CustomError } from "../exceptions/baseException.js";
 import NewTimetable from "../models/newTimetable.js";
 import Session from "../models/session.model.js";
+import User from "../models/userModel.js";
 
 import { tryCatch } from "../utils/tryCatchWrapper.js";
 import { getDayOfWeek } from "../utils/utilFunctions.js";
@@ -67,6 +68,17 @@ const addSession = tryCatch(async (req, res) => {
   timetable.sessions.push(session._id);
 
   await timetable.save();
+
+  const users = await User.find({});
+
+  const notifications = users.map((user) => {
+    return new Notification({
+      userID: user._id,
+      message: `Room "${room.roomName}" in building ${room.building} has been deleted`,
+    });
+  });
+
+  await Notification.insertMany(notifications);
 
   res.json({ message: "session added successfully" });
 });
