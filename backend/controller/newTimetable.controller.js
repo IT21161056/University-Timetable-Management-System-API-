@@ -3,6 +3,7 @@ import { CustomError } from "../exceptions/baseException.js";
 import NewTimetable from "../models/newTimetable.js";
 import Session from "../models/session.model.js";
 import User from "../models/userModel.js";
+import SessionRoomBooking from "../models/sessionRoomBooking.model.js";
 
 import { tryCatch } from "../utils/tryCatchWrapper.js";
 import { getDayOfWeek } from "../utils/utilFunctions.js";
@@ -69,16 +70,24 @@ const addSession = tryCatch(async (req, res) => {
 
   await timetable.save();
 
-  const users = await User.find({});
-
-  const notifications = users.map((user) => {
-    return new Notification({
-      userID: user._id,
-      message: `Room "${room.roomName}" in building ${room.building} has been deleted`,
-    });
+  await SessionRoomBooking.create({
+    sessionID: session._id,
+    roomID: location,
+    day: getDayOfWeek(startDateTime),
+    startTime: startDateTime,
+    endTime: endDateTime,
   });
 
-  await Notification.insertMany(notifications);
+  // const users = await User.find({});
+
+  // const notifications = users.map((user) => {
+  //   return new Notification({
+  //     userID: user._id,
+  //     message: `Room "${room.roomName}" in building ${room.building} has been deleted`,
+  //   });
+  // });
+
+  // await Notification.insertMany(notifications);
 
   res.json({ message: "session added successfully" });
 });
@@ -86,7 +95,6 @@ const addSession = tryCatch(async (req, res) => {
 // get all time tables
 const getNewTimetables = tryCatch(async (req, res) => {
   const timetables = await NewTimetable.find().populate("sessions");
-
   res.json(timetables);
 });
 

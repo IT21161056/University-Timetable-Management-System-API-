@@ -1,5 +1,5 @@
 import RoomBooking from "../models/roomBooking.model.js";
-import Timetable from "../models/timeTable.modal.js";
+import Timetable from "../models/newTimetable.js";
 
 export async function createBooking(req, res) {}
 

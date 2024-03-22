@@ -19,12 +19,12 @@ import authRoutes from "./routes/auth.routes.js";
 import roomRoutes from "./routes/room.routes.js";
 import courseRoute from "./routes/course.route.js";
 import facultyRoutes from "./routes/faculty.routes.js";
-import sessionRoutes from "./routes/session.routes.js";
-import timetableRoutes from "./routes/timetable.routes.js";
 import enrollmentRoutes from "./routes/enrollment.routes.js";
 import roomBookingRoutes from "./routes/roomBooking.routes.js";
 import notificationRoutes from "./routes/notification.routes.js";
 import newTimetableRoutes from "./routes/newTimetable.routes.js";
+import sessionRoomBooking from "./routes/sessionRoomBooking.routes.js";
+import sessionRoutes from "./routes/session.routes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3010;
@@ -53,12 +53,12 @@ app.use("/api/user", authRoutes);
 app.use("/api/room", roomRoutes);
 app.use("/api/course", courseRoute);
 app.use("/api/faculty", facultyRoutes);
-app.use("/api/session", sessionRoutes);
-app.use("/api/room-booking", roomBookingRoutes);
-app.use("/api/timetable", timetableRoutes);
-app.use("/api/notification", notificationRoutes);
 app.use("/api/enroll", enrollmentRoutes);
+app.use("/api/sessionRoom", sessionRoomBooking);
+app.use("/api/room-booking", roomBookingRoutes);
+app.use("/api/notification", notificationRoutes);
 app.use("/api/newTimetable", newTimetableRoutes);
+app.use("/api/session", sessionRoutes);
 
 app.all("*", (req, res) => {
   res.status(404);
