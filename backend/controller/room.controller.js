@@ -8,28 +8,31 @@ import { io } from "../server.js";
 // Controller for creating a room
 const createRoom = tryCatch(async (req, res) => {
   const { roomName, building, floor, capacity } = req.body;
-  const newRoom = new Room({
+
+  if (!roomName || !building || !floor || !capacity)
+    throw new CustomError("All fields are required!", 500);
+
+  const savedRoom = await Room.create({
     roomName,
     building,
     floor,
     capacity,
   });
-  const savedRoom = await newRoom.save();
 
-  const users = await User.find();
+  // const users = await User.find();
 
-  const notifications = users.map((user) => {
-    return new Notification({
-      userID: user._id,
-      message: `A new room "${roomName}" has been created in building ${building}`,
-    });
-  });
+  // const notifications = users.map((user) => {
+  //   return new Notification({
+  //     userID: user._id,
+  //     message: `A new room "${roomName}" has been created in building ${building}`,
+  //   });
+  // });
 
-  notifications = await Notification.insertMany(notifications);
+  // notifications = await Notification.insertMany(notifications);
 
-  if (notifications) {
-    io.emit("notification", { data: notifications });
-  }
+  // if (notifications) {
+  //   io.emit("notification", { data: notifications });
+  // }
 
   res.status(201).json(savedRoom);
 });
@@ -74,16 +77,16 @@ const deleteRoom = tryCatch(async (req, res) => {
     throw new CustomError({ message: "Room not found" });
   }
 
-  const users = await User.find();
+  // const users = await User.find();
 
-  const notifications = users.map((user) => {
-    return new Notification({
-      userID: user._id,
-      message: `Room "${room.roomName}" in building ${room.building} has been deleted`,
-    });
-  });
+  // const notifications = users.map((user) => {
+  //   return new Notification({
+  //     userID: user._id,
+  //     message: `Room "${room.roomName}" in building ${room.building} has been deleted`,
+  //   });
+  // });
 
-  await Notification.insertMany(notifications);
+  // await Notification.insertMany(notifications);
 
   res.json({ message: "Room deleted!" });
 });

@@ -1,12 +1,11 @@
 import express from "express";
+const router = express.Router();
 import {
-  createSession,
-  getSessionByGiveTimeRange,
+  getAllSessions,
+  deleteSession,
 } from "../controller/session.controller.js";
 
-const router = express.Router();
-
-router.route("/").post(createSession);
-router.route("/get-session").post(getSessionByGiveTimeRange);
+router.route("/").get(getAllSessions);
+router.route("/").delete(deleteSession);
 
 export default router;

@@ -9,6 +9,18 @@ const sessionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  day: {
+    type: String,
+    enum: [
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+      "sunday",
+    ],
+  },
   course: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Course",
