@@ -1,4 +1,4 @@
-S# University Timetable Management System API
+# University Timetable Management System API
 
 The University Timetable Management API simplifies class scheduling for students, faculty, and administrative staff. Prioritizing security, data integrity, and ease of use, it offers a reliable solution for managing university schedules.
 
