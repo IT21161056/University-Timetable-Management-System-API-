@@ -104,14 +104,11 @@ const getAllRooms = tryCatch(async (req, res) => {
 const getRoomById = tryCatch(async (req, res) => {
   const { id } = req.params;
   const room = await Room.findById(id);
+
   if (!room) {
-    throw new CustomError({
-      message: "Room not found",
-      status: 404,
-      type: "Error.NotFound",
-    });
+    throw new CustomError("Room not found", 404);
   }
-  res.json(room);
+  res.status(200).json(room);
 });
 
 export { createRoom, updateRoom, deleteRoom, getAllRooms, getRoomById };

@@ -4,7 +4,7 @@ import {
   addSession,
   getTimetables,
   getSessionsByDateTime,
-} from "../controller/newTimetable.controller.js";
+} from "../controller/timetable.controller.js";
 
 router.route("/").post(addSession);
 router.route("/").get(getTimetables);
