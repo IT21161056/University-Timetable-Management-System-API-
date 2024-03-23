@@ -9,8 +9,8 @@ This RESTful API facilitates the management of a university's timetable system, 
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/sliitcsse/assignment-01-IsuruX98.git
-   cd assignment-01-IsuruX98
+   https://github.com/sliitcsse/assignment-01-IT21161056.git
+
    ```
 
 2. **Install dependencies:**
@@ -29,10 +29,6 @@ This RESTful API facilitates the management of a university's timetable system, 
    ```bash
    npm start
    ```
-
-## API Endpoint Documentation
-
-The API endpoints are documented using Swagger. Once the server is running, you can access the Swagger UI at `http://localhost:<PORT>/api-docs` to view and interact with the documentation.
 
 ## Running Tests
 
