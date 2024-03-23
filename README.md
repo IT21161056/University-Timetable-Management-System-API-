@@ -17,14 +17,13 @@ This RESTful API facilitates the management of a university's timetable system, 
 
    - navigate to backend folder
 
-```bash
- cd backend
-```
+   ```bash
+   cd backend
+   ```
 
-```bash
-
-npm install
-```
+   ```bash
+   npm install
+   ```
 
 3. **Set up environment variables:**
 
@@ -44,7 +43,7 @@ npm install
 To run unit tests, use the following command:
 
 ```bash
-npm test test/<name of the test file.>
+npm test test/`name_of_the_test_file`
 ```
 
 ### Integration Testing
