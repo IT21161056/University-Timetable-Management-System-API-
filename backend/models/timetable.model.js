@@ -8,4 +8,4 @@ const timetableSchema = new mongoose.Schema({
   sessions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Session" }],
 });
 
-export default mongoose.model("newTimetable", timetableSchema);
+export default mongoose.model("Timetable", timetableSchema);

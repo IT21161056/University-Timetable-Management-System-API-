@@ -1,5 +1,5 @@
 import RoomBooking from "../models/roomBooking.model.js";
-import Timetable from "../models/newTimetable.js";
+import Timetable from "../models/timetable.model.js";
 import { tryCatch } from "../utils/tryCatchWrapper.js";
 import { CustomError } from "../exceptions/baseException.js";
 

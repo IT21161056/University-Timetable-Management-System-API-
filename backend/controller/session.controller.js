@@ -2,7 +2,7 @@ import { CustomError } from "../exceptions/baseException.js";
 import Session from "../models/session.model.js";
 import SessionRoomBooking from "../models/sessionRoomBooking.model.js";
 import Room from "../models/room.model.js";
-import Timetable from "../models/newTimetable.js";
+import Timetable from "../models/timetable.model.js";
 import { tryCatch } from "../utils/tryCatchWrapper.js";
 
 const getAllSessions = tryCatch(async (req, res) => {
