@@ -37,9 +37,7 @@ The University Timetable Management API simplifies class scheduling for students
 
 ## API Endpoint Documentation
 
-description here...
-
-[API Endpoint Documentation](https://documenter.getpostman.com/view/28700456/2sA35BairK#f66b9d55-a8b2-42ef-9904-a077ee08d3b9)
+For detailed documentation of the API endpoints, please refer to the [API Endpoint Documentation](https://documenter.getpostman.com/view/28700456/2sA35BairK#f66b9d55-a8b2-42ef-9904-a077ee08d3b9)
 
 ## Running Tests
 
