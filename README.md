@@ -1,25 +1,24 @@
-# IT21161056 - Peiris M.M.A.E
-
 # University Timetable Management System API
 
-This RESTful API facilitates the management of a university's timetable system, allowing for the creation, modification, and querying of class schedules for students, faculty, and administrative staff.
+The University Timetable Management API simplifies class scheduling for students, faculty, and administrative staff. Prioritizing security, data integrity, and ease of use, it offers a reliable solution for managing university schedules.
 
 ## Setup Instructions
 
 1. **Clone the repository:**
 
    ```bash
-   https://github.com/sliitcsse/assignment-01-IT21161056.git
-
+   git clone https://github.com/sliitcsse/assignment-01-IT21161056.git
    ```
 
 2. **Install dependencies:**
 
-   - navigate to backend folder
+   - Navigate to the backend folder:
 
    ```bash
-   cd backend
+   cd assignment-01-IT21161056/backend
    ```
+
+   - Install dependencies:
 
    ```bash
    npm install
@@ -36,6 +35,12 @@ This RESTful API facilitates the management of a university's timetable system, 
    npm start
    ```
 
+## API Endpoint Documentation
+
+description here...
+
+[API Endpoint Documentation](https://documenter.getpostman.com/view/28700456/2sA35BairK#f66b9d55-a8b2-42ef-9904-a077ee08d3b9)
+
 ## Running Tests
 
 ### Unit Testing
@@ -43,7 +48,7 @@ This RESTful API facilitates the management of a university's timetable system, 
 To run unit tests, use the following command:
 
 ```bash
-npm test test/`name_of_the_test_file`
+npm test test/name_of_the_test_file
 ```
 
 ### Integration Testing
