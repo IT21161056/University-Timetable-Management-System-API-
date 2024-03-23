@@ -1,8 +1,9 @@
 import { CustomError } from "../exceptions/baseException.js";
 import Session from "../models/session.model.js";
+import SessionRoomBooking from "../models/sessionRoomBooking.model.js";
+import Room from "../models/room.model.js";
 import Timetable from "../models/newTimetable.js";
 import { tryCatch } from "../utils/tryCatchWrapper.js";
-import { getDayOfWeek } from "../utils/utilFunctions.js";
 
 const getAllSessions = tryCatch(async (req, res) => {
   const sessions = await Session.find();
@@ -10,6 +11,51 @@ const getAllSessions = tryCatch(async (req, res) => {
   if (!sessions.length) throw new CustomError("No sessions found!", 404);
 
   res.status(200).json(sessions);
+});
+
+const changeLocation = tryCatch(async (req, res) => {
+  const { newLocation, sessionID } = req.body;
+
+  const session = Session.findById(sessionID);
+
+  if (!session) throw new CustomError("Session not found", 404);
+
+  // Check if room is available in timetable
+  const locationConflict = await SessionRoomBooking.findOne({
+    sessionID,
+    $or: [
+      {
+        $and: [
+          { startTime: { $lte: session.startDateTime } },
+          { endTime: { $gte: session.startDateTime } },
+        ],
+      },
+      {
+        $and: [
+          { startTime: { $lte: session.endDateTime } },
+          { endTime: { $gte: session.endDateTime } },
+        ],
+      },
+    ],
+  });
+
+  if (locationConflict) {
+    throw new CustomError(
+      "Room is already allocated in the timetable during the specified time"
+    );
+  }
+
+  const newRoom = await Room.findOne({ roomName: newLocation });
+
+  if (!newRoom) throw new CustomError("Room not found.", 404);
+
+  session.location = newRoom._id;
+
+  await session.save();
+
+  res.status(200).json({
+    message: `Session location has been changed.The new location is ${newRoom.roomName}`,
+  });
 });
 
 //delete a session
@@ -42,4 +88,4 @@ const deleteSession = tryCatch(async (req, res) => {
     .json({ message: "Session deleted successfully", deletedSession });
 });
 
-export { getAllSessions, deleteSession };
+export { getAllSessions, deleteSession, changeLocation };

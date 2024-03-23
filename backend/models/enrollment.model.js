@@ -4,11 +4,11 @@ const { Schema, model } = mongoose;
 
 const enrollmentSchema = Schema(
   {
-    user: {
+    userID: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    course: {
+    courseID: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
     },

@@ -1,11 +1,11 @@
 import express from "express";
 const router = express.Router();
 import {
-  getBookings,
-  removeBooking,
+  getSessionRoomBookings,
+  removeSessionRoomBooking,
 } from "../controller/sessionRoomBooking.controller.js";
 
-router.route("/").get(getBookings);
-router.route("/").delete(removeBooking);
+router.route("/").get(getSessionRoomBookings);
+router.route("/").delete(removeSessionRoomBooking);
 
 export default router;

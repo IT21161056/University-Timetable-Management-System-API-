@@ -53,7 +53,7 @@ app.use("/api/user", authRoutes);
 app.use("/api/room", roomRoutes);
 app.use("/api/course", courseRoute);
 app.use("/api/faculty", facultyRoutes);
-app.use("/api/enroll", enrollmentRoutes);
+app.use("/api/enrollment", enrollmentRoutes);
 app.use("/api/sessionRoom", sessionRoomBooking);
 app.use("/api/room-booking", roomBookingRoutes);
 app.use("/api/notification", notificationRoutes);

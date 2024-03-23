@@ -5,8 +5,7 @@ import SessionRoomBooking from "../models/sessionRoomBooking.model.js";
 
 const ObjectId = mongoose.Types.ObjectId;
 
-const getBookings = tryCatch(async (req, res) => {
-  console.log("hello");
+const getSessionRoomBookings = tryCatch(async (req, res) => {
   const bookings = await SessionRoomBooking.find();
 
   if (!bookings.length) throw new CustomError("No bookings yet!", 404);
@@ -14,7 +13,7 @@ const getBookings = tryCatch(async (req, res) => {
   res.status(200).json(bookings);
 });
 
-const removeBooking = tryCatch(async (req, res) => {
+const removeSessionRoomBooking = tryCatch(async (req, res) => {
   const isValidObjectId = ObjectId.isValid(req.params.id);
 
   if (!isValidObjectId) throw new CustomError("Resource not found!", 404);
@@ -28,4 +27,4 @@ const removeBooking = tryCatch(async (req, res) => {
   res.status(200).json(deletedBooking);
 });
 
-export { getBookings, removeBooking };
+export { getSessionRoomBookings, removeSessionRoomBooking };

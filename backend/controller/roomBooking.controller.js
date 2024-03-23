@@ -1,12 +1,25 @@
 import RoomBooking from "../models/roomBooking.model.js";
+import SessionRoomBooking from "../models/sessionRoomBooking.model.js";
 import Timetable from "../models/newTimetable.js";
+import { tryCatch } from "../utils/tryCatchWrapper.js";
+import { CustomError } from "../exceptions/baseException.js";
 
-export async function createBooking(req, res) {}
+const createBooking = tryCatch(async (req, res) => {
+  const { userID, roomID, reason, day, startTime, endTime } = req.body;
+});
 
-export async function updateBooking(req, res) {}
+const updateBooking = tryCatch(async (req, res) => {});
 
-export async function deleteBooking(req, res) {}
+const deleteBooking = tryCatch(async (req, res) => {});
 
-export async function getAllBookings(req, res) {}
+const getAllBookings = tryCatch(async (req, res) => {});
 
-export async function getBookingById(req, res) {}
+const getBookingByID = tryCatch(async (req, res) => {});
+
+export {
+  createBooking,
+  deleteBooking,
+  getAllBookings,
+  getBookingByID,
+  updateBooking,
+};

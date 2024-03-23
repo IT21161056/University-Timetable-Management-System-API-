@@ -93,11 +93,11 @@ const addSession = tryCatch(async (req, res) => {
 });
 
 // get all time tables
-const getNewTimetables = tryCatch(async (req, res) => {
+const getTimetables = tryCatch(async (req, res) => {
   const timetables = await NewTimetable.find().populate("sessions");
   res.json(timetables);
 });
 
 const getSessionsByDateTime = tryCatch(async (req, res) => {});
 
-export { addSession, getNewTimetables, getSessionsByDateTime };
+export { addSession, getTimetables, getSessionsByDateTime };
