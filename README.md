@@ -43,7 +43,7 @@ This RESTful API facilitates the management of a university's timetable system, 
 To run unit tests, use the following command:
 
 ```bash
-npm test test/<name of the test file.>
+npm test test/`name_of_the_test_file`
 ```
 
 ### Integration Testing
