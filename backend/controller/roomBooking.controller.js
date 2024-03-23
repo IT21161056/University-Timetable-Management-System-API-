@@ -1,10 +1,36 @@
 import RoomBooking from "../models/roomBooking.model.js";
-import Timetable from "../models/timetable.model.js";
+import SessionRoomBooking from "../models/sessionRoomBooking.model.js";
 import { tryCatch } from "../utils/tryCatchWrapper.js";
 import { CustomError } from "../exceptions/baseException.js";
+import { getDayOfWeek } from "../utils/utilFunctions.js";
 
 const createBooking = tryCatch(async (req, res) => {
   const { userID, roomID, reason, day, startTime, endTime } = req.body;
+
+  const alreadyAllocateToSession = await SessionRoomBooking.findOne({
+    roomID,
+    day: getDayOfWeek(day),
+    $or: [
+      {
+        $and: [
+          { startTime: { $lte: startTime } },
+          { endTime: { $gte: startTime } },
+        ],
+      },
+      {
+        $and: [
+          { startTime: { $lte: endTime } },
+          { endTime: { $gte: endTime } },
+        ],
+      },
+    ],
+  });
+
+  if (alreadyAllocateToSession) {
+    return res
+      .status(400)
+      .json({ message: "There is a conflicting booking at the same time" });
+  }
 
   // Check if room is available in timetable
   const bookingConflict = await RoomBooking.findOne({

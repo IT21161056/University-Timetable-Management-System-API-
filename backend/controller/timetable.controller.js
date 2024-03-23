@@ -1,101 +1,37 @@
 import { CustomError } from "../exceptions/baseException.js";
 import Timetable from "../models/timetable.model.js";
-import Session from "../models/session.model.js";
-import SessionRoomBooking from "../models/sessionRoomBooking.model.js";
-
+import Faculty from "../models/faculty.model.js";
 import { tryCatch } from "../utils/tryCatchWrapper.js";
-import { getDayOfWeek } from "../utils/utilFunctions.js";
 
 //create time table
-const addSession = tryCatch(async (req, res) => {
-  const { facultyId, startDateTime, endDateTime, location, courseId } =
-    req.body;
+const createTimetable = tryCatch(async (req, res) => {
+  const { facultyId } = req.body;
 
-  if (!facultyId || !startDateTime || !endDateTime || !location || !courseId)
-    throw new CustomError("All fields are required!");
+  const existingTimetable = await Timetable.findOne({ faculty: facultyId });
 
-  //get existing time table to given faculty
-  const existingTimetable = await Timetable.findOne({
-    faculty: facultyId,
-  }).populate("sessions");
+  if (existingTimetable)
+    throw new CustomError("Existing timetable found!", 400);
 
-  //check if there are any sessions in given time
-  if (existingTimetable) {
-    const sessionsInDay = existingTimetable.sessions.filter(
-      (session) => session.day === getDayOfWeek(startDateTime)
-    );
+  const newTimetable = await Timetable.create({ faculty: facultyId });
 
-    sessionsInDay.map((session) => {
-      const existingStartDateTime = new Date(session.startDateTime).getTime();
-      const existingEndDateTime = new Date(session.endDateTime).getTime();
-      const userEnteredStartDateTime = new Date(startDateTime).getTime();
-      const userEnteredEndDateTime = new Date(endDateTime).getTime();
+  if (!newTimetable) throw new CustomError("Timetable create fail.", 500);
 
-      //check overlapping status
-      const overlapped =
-        (existingStartDateTime <= userEnteredStartDateTime &&
-          existingEndDateTime > userEnteredStartDateTime) ||
-        (existingStartDateTime <= userEnteredEndDateTime &&
-          existingEndDateTime > userEnteredEndDateTime);
-
-      if (overlapped) {
-        throw new CustomError("This time block is not available!", 400);
-      }
-    });
-  }
-
-  let timetable = null;
-
-  if (existingTimetable) {
-    timetable = existingTimetable;
-  } else {
-    timetable = await Timetable.create({
-      faculty: facultyId,
-    });
-  }
-
-  if (!timetable) throw new CustomError("No timetable to add sessions!", 500);
-
-  const session = await Session.create({
-    startDateTime,
-    endDateTime,
-    location,
-    course: courseId,
-    day: getDayOfWeek(startDateTime),
-  });
-
-  timetable.sessions.push(session._id);
-
-  await timetable.save();
-
-  await SessionRoomBooking.create({
-    sessionID: session._id,
-    roomID: location,
-    day: getDayOfWeek(startDateTime),
-    startTime: startDateTime,
-    endTime: endDateTime,
-  });
-
-  // const users = await User.find({});
-
-  // const notifications = users.map((user) => {
-  //   return new Notification({
-  //     userID: user._id,
-  //     message: `Room "${room.roomName}" in building ${room.building} has been deleted`,
-  //   });
-  // });
-
-  // await Notification.insertMany(notifications);
-
-  res.json({ message: "session added successfully" });
+  res.status(200).json(newTimetable);
 });
 
 // get all time tables
 const getTimetables = tryCatch(async (req, res) => {
   const timetables = await Timetable.find().populate("sessions");
+
+  if (!timetables.length) throw new CustomError("Timetables not found!", 404);
+
   res.json(timetables);
 });
 
-const getSessionsByDateTime = tryCatch(async (req, res) => {});
+const getTimetableByFaculty = tryCatch(async (req, res) => {
+  const { facultyName } = req.body;
 
-export { addSession, getTimetables, getSessionsByDateTime };
+  const faculty = await Faculty.findOne({ facultyName });
+});
+
+export { createTimetable, getTimetables, getTimetableByFaculty };

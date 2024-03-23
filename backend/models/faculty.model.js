@@ -4,6 +4,7 @@ const facultySchema = mongoose.Schema({
   facultyName: {
     type: String,
     required: true,
+    unique: true,
   },
 });
 

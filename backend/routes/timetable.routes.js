@@ -1,13 +1,13 @@
 import express from "express";
 const router = express.Router();
 import {
-  addSession,
+  createTimetable,
   getTimetables,
-  getSessionsByDateTime,
+  getTimetableByFaculty,
 } from "../controller/timetable.controller.js";
 
-router.route("/").post(addSession);
+router.route("/").post(createTimetable);
 router.route("/").get(getTimetables);
-router.route("/get-session").post(getSessionsByDateTime);
+router.route("/get-session").post(getTimetableByFaculty);
 
 export default router;
