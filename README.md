@@ -6,34 +6,34 @@ The University Timetable Management API simplifies class scheduling for students
 
 1. **Clone the repository:**
 
-   ```bash
-   git clone https://github.com/sliitcsse/assignment-01-IT21161056.git
-   ```
+```bash
+git clone https://github.com/sliitcsse/assignment-01-IT21161056.git
+```
 
 2. **Install dependencies:**
 
-   - Navigate to the backend folder:
+- Navigate to the backend folder:
 
-   ```bash
-   cd assignment-01-IT21161056/backend
-   ```
+```bash
+cd assignment-01-IT21161056/backend
+```
 
-   - Install dependencies:
+- Install dependencies:
 
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
 3. **Set up environment variables:**
 
-   - Create a `.env` file based on `.env.example`.
-   - Modify the `.env` file to include your MongoDB connection string, JWT secret key, and any other necessary configurations.
+- Create a `.env` file based on `.env.example`.
+- Modify the `.env` file to include your MongoDB connection string, JWT secret key, and any other necessary configurations.
 
 4. **Start the server:**
 
-   ```bash
-   npm start
-   ```
+```bash
+npm start
+```
 
 ## API Endpoint Documentation
 
