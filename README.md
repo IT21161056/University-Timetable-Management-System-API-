@@ -1,4 +1,4 @@
-# IT21169380 - Thuduwage I.M.H.G
+# IT21161056 - Peiris M.M.A.E
 
 # University Timetable Management System API
 
@@ -15,9 +15,16 @@ This RESTful API facilitates the management of a university's timetable system, 
 
 2. **Install dependencies:**
 
-   ```bash
-   npm install
-   ```
+   - navigate to backend folder
+
+```bash
+ cd backend
+```
+
+```bash
+
+npm install
+```
 
 3. **Set up environment variables:**
 
@@ -37,7 +44,7 @@ This RESTful API facilitates the management of a university's timetable system, 
 To run unit tests, use the following command:
 
 ```bash
-npm test
+npm test test/<name of the test file.>
 ```
 
 ### Integration Testing
