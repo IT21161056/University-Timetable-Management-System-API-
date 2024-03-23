@@ -17,14 +17,13 @@ This RESTful API facilitates the management of a university's timetable system, 
 
    - navigate to backend folder
 
-```bash
- cd backend
-```
+   ```bash
+   cd backend
+   ```
 
-```bash
-
-npm install
-```
+   ```bash
+   npm install
+   ```
 
 3. **Set up environment variables:**
 
