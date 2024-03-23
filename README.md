@@ -50,38 +50,6 @@ To run unit tests, use the following command:
 ```bash
 npm test test/name_of_the_test_file
 ```
-
-### Integration Testing
-
-Integration tests ensure different parts of the application work together seamlessly. Before running integration tests, ensure you have a separate test database set up.
-
-1. Create a test database in MongoDB.
-2. Set up a separate environment configuration for testing (e.g., `.env.test`) with the test database connection string.
-3. Update the `config/db.js` file to use the test environment configuration when running tests.
-4. Run integration tests using the following command:
-
-```bash
-npm run test:integration
-```
-
-### Performance Testing
-
-Performance tests evaluate the API's performance under various loads. Before running performance tests, ensure you have a tool like Artillery.io installed and configured.
-
-1. Install Artillery.io globally if you haven't already:
-
-   ```bash
-   npm install -g artillery
-   ```
-
-2. Write your performance test scripts in the `tests/performance` directory.
-
-3. Run performance tests using the following command:
-
-   ```bash
-   artillery run <test_script.yml>
-   ```
-
 ## Additional Notes
 
 - Ensure MongoDB is running before starting the server.
